@@ -24,15 +24,17 @@ class GameService {
 
   // Scoring based on mockup
   int getScoreForMethod(GameMethod method) {
+    if (_currentWord == null) return 0;
+    
     switch (method) {
       case GameMethod.draw:
-        return 10;
+        return _currentWord!.drawScore;
       case GameMethod.mime:
-        return 15;
+        return _currentWord!.mimeScore;
       case GameMethod.playDough:
-        return 20;
+        return _currentWord!.playDoughScore;
       case GameMethod.oneWord:
-        return 5;
+        return _currentWord!.oneWordScore;
     }
   }
 
