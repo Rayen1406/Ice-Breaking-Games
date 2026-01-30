@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lottie/lottie.dart';
+
 class CredentialsScreen extends StatelessWidget {
   const CredentialsScreen({super.key});
 
@@ -22,10 +24,9 @@ class CredentialsScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.celebration,
-                  size: 80,
-                  color: Colors.white,
+                Lottie.asset(
+                  'assets/animations/rabbit.json',
+                  height: 200,
                 ),
                 const SizedBox(height: 24),
                 const Text(
