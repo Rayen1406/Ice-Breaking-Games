@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'loading_screen.dart';
+import 'credentials_screen.dart';
 
 class TitleScreen extends StatefulWidget {
   const TitleScreen({super.key});
@@ -10,6 +11,7 @@ class TitleScreen extends StatefulWidget {
 
 class _TitleScreenState extends State<TitleScreen> {
   double _selectedMinutes = 3; // Default 3 minutes (changed to double for 0.5)
+  int _logoTapCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,24 +42,40 @@ class _TitleScreenState extends State<TitleScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Logo
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24), // Matches app icon rounding
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          blurRadius: 20,
-                          offset: const Offset(0, 5),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _logoTapCount++;
+                        if (_logoTapCount >= 5) {
+                          _logoTapCount = 0;
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CredentialsScreen(),
+                            ),
+                          );
+                        }
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24), // Matches app icon rounding
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24),
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          width: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
+                          height: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
+                          fit: BoxFit.cover,
                         ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
-                      child: Image.asset(
-                        'assets/images/logo.png',
-                        width: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
-                        height: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
-                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
