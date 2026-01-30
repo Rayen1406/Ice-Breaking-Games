@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
 
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CredentialsScreen extends StatelessWidget {
+class CredentialsScreen extends StatefulWidget {
   const CredentialsScreen({super.key});
+
+  @override
+  State<CredentialsScreen> createState() => _CredentialsScreenState();
+}
+
+class _CredentialsScreenState extends State<CredentialsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _markEasterEggAsFound();
+  }
+
+  Future<void> _markEasterEggAsFound() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_easter_egg_found', true);
+  }
 
   @override
   Widget build(BuildContext context) {

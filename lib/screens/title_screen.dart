@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'loading_screen.dart';
 import 'credentials_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TitleScreen extends StatefulWidget {
   const TitleScreen({super.key});
@@ -9,9 +10,25 @@ class TitleScreen extends StatefulWidget {
   State<TitleScreen> createState() => _TitleScreenState();
 }
 
+
+
 class _TitleScreenState extends State<TitleScreen> {
   double _selectedMinutes = 3; // Default 3 minutes (changed to double for 0.5)
   int _logoTapCount = 0;
+  bool _isEasterEggFound = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkEasterEggStatus();
+  }
+
+  Future<void> _checkEasterEggStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isEasterEggFound = prefs.getBool('is_easter_egg_found') ?? false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,32 +70,51 @@ class _TitleScreenState extends State<TitleScreen> {
                             MaterialPageRoute(
                               builder: (context) => const CredentialsScreen(),
                             ),
-                          );
+                          ).then((_) => _checkEasterEggStatus());
                         }
                       });
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24), // Matches app icon rounding
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 5),
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24), // Matches app icon rounding
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.3),
+                                  blurRadius: 20,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(24),
+                              child: Image.asset(
+                                'assets/images/logo.png',
+                                width: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
+                                height: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
+                          if (_isEasterEggFound)
+                            Positioned(
+                              top: -15,
+                              right: -10,
+                              child: Transform.rotate(
+                                angle: 0.5, // Approx 30 degrees tilt
+                                child: const Text(
+                                  '👑',
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                  ),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24),
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          width: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
-                          height: isSmallScreen ? 100 : (isMediumScreen ? 120 : 140),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
                     ),
-                  ),
+
                   
                   SizedBox(height: isSmallScreen ? 20 : 30),
                   
