@@ -377,7 +377,7 @@ class _GameScreenState extends State<GameScreen> {
                             labelEnglish: 'Draw',
                             labelFrench: 'dessiner',
                             labelArabic: 'رسم',
-                            score: _gameService.getScoreForMethod(GameMethod.draw),
+                            score: _gameService.currentScores[GameMethod.draw]!,
                             color: const Color(0xFFFF8A65), // Orange
                             onTap: () => _handleMethodSelection(GameMethod.draw),
                           ),
@@ -386,7 +386,7 @@ class _GameScreenState extends State<GameScreen> {
                             labelEnglish: 'Mime',
                             labelFrench: 'mime',
                             labelArabic: 'ميم',
-                            score: _gameService.getScoreForMethod(GameMethod.mime),
+                            score: _gameService.currentScores[GameMethod.mime]!,
                             color: const Color(0xFF9575CD), // Purple
                             onTap: () => _handleMethodSelection(GameMethod.mime),
                           ),
@@ -395,7 +395,7 @@ class _GameScreenState extends State<GameScreen> {
                             labelEnglish: 'Play Dough',
                             labelFrench: 'pate à modeler',
                             labelArabic: 'صلصال',
-                            score: _gameService.getScoreForMethod(GameMethod.playDough),
+                            score: _gameService.currentScores[GameMethod.playDough]!,
                             color: const Color(0xFF66BB6A), // Green
                             onTap: () => _handleMethodSelection(GameMethod.playDough),
                           ),
@@ -404,7 +404,7 @@ class _GameScreenState extends State<GameScreen> {
                             labelEnglish: 'One Word',
                             labelFrench: 'un mot',
                             labelArabic: 'كلمة واحدة',
-                            score: _gameService.getScoreForMethod(GameMethod.oneWord),
+                            score: _gameService.currentScores[GameMethod.oneWord]!,
                             color: const Color(0xFF26C6DA), // Cyan
                             onTap: () => _handleMethodSelection(GameMethod.oneWord),
                           ),

@@ -23,19 +23,28 @@ class GameService {
   WordModel? get currentWord => _currentWord;
 
   // Scoring based on mockup
+  // Dynamic scores for each round
+  final Map<GameMethod, int> _currentScores = {};
+
+  Map<GameMethod, int> get currentScores => Map.unmodifiable(_currentScores);
+
   int getScoreForMethod(GameMethod method) {
-    if (_currentWord == null) return 0;
-    
-    switch (method) {
-      case GameMethod.draw:
-        return _currentWord!.drawScore;
-      case GameMethod.mime:
-        return _currentWord!.mimeScore;
-      case GameMethod.playDough:
-        return _currentWord!.playDoughScore;
-      case GameMethod.oneWord:
-        return _currentWord!.oneWordScore;
+    if (_currentScores.isEmpty) {
+      _randomizeScores();
     }
+    return _currentScores[method] ?? 0;
+  }
+
+  void _randomizeScores() {
+    final random = Random();
+    
+    // Draw always gets maximum points (20)
+    _currentScores[GameMethod.draw] = 20;
+    
+    // Others get random points between 5 and 15
+    _currentScores[GameMethod.mime] = 5 + random.nextInt(11); // 5 to 15
+    _currentScores[GameMethod.playDough] = 5 + random.nextInt(11); // 5 to 15
+    _currentScores[GameMethod.oneWord] = 5 + random.nextInt(11); // 5 to 15
   }
 
   void startNewGame() {
@@ -50,6 +59,9 @@ class GameService {
   }
 
   WordModel? getNextWord() {
+    // Randomize scores for the new round
+    _randomizeScores();
+
     if (_availableWords.isEmpty) {
       // If all words used, reset the pool
       _availableWords.addAll(WordsData.words);
@@ -60,6 +72,7 @@ class GameService {
     final index = random.nextInt(_availableWords.length);
     _currentWord = _availableWords[index];
     _availableWords.removeAt(index);
+
     _usedWords.add(_currentWord!);
     
     return _currentWord;
